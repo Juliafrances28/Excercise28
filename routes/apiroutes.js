@@ -32,29 +32,25 @@ module.exports = function (app) {
   });
 
 app.get("/api/workouts/range", ({ body }, res) => {
-  db.workout
-    .create(body)
-    .then((dbworkout) => {
-      res.json(dbworkout);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
+  Users.aggregate([ 
+    {
+      $addFields: {
+        totalWeight: { $sum: "$weight" } ,
+        totalDuration: { $sum: "$duration" }
+      }
+    },
+  ])
+  .then(function (res){
+    console.log(res); 
+  })  
+  .catch((err) => {
+    res.json(err);
+  });
+  
 });
 
     // Find the max balance of all accounts
-Users.aggregate([ 
-  {
-    $addFields: {
-      totalWeight: { $sum: "$weight" } ,
-      totalDuration: { $sum: "$duration" }
-    }
-  },
-])
-.then(function (res) {
-  console.log(res); 
 
-});
 
 
 
