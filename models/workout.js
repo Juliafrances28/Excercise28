@@ -5,9 +5,11 @@ let db = "../models/workout.js";
 const Schema = mongoose.Schema;
 
 // add the date. to schema
+// ({ test: Date });
+// schema.path('test') instanceof mongoose.Date
 
 const workoutSchema = new Schema({
-    day: new Date().setDate(new Date().getDate() - 6), //why does it say -6),?
+    day: { type: Date, default: Date.now },
     excercise: [
       {
         type: {
@@ -23,24 +25,24 @@ const workoutSchema = new Schema({
         },
 
         duration: {
-          type: number,
+          type: Number,
           required: "Enter the duration of the workout",
         },
 
         weight: {
-          type: number,
+          type: Number,
         },
 
         reps: {
-          type: number,
+          type: Number,
         },
 
         sets: {
-          type: number,
+          type: Number,
         },
 
         distance: {
-          type: number,
+          type: Number,
         },
       },
     ],
