@@ -31,14 +31,16 @@ module.exports = function (app) {
       });
   });
 
-  // db.orders.aggregate([
-  //   { $match: { status: "A" } },
-  //   { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
-  // ]);
-
-  {
-   
-    },
+app.get("/api/workouts/range", ({ body }, res) => {
+  db.workout
+    .create(body)
+    .then((dbworkout) => {
+      res.json(dbworkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
     // Find the max balance of all accounts
 Users.aggregate([ 
