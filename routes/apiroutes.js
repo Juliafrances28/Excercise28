@@ -6,8 +6,6 @@ const PORT = process.env.PORT || 3000;
 const db = require("../models");
 
 module.exports = function (app) {
-//add range 
-
   app.get("/api/workouts", (req, res) => {
     db.workout
       .find({})
@@ -31,38 +29,23 @@ module.exports = function (app) {
       });
   });
 
-app.get("/api/workouts/range", ({ body }, res) => {
-  Users.aggregate([ 
-    {
-      $addFields: {
-        totalWeight: { $sum: "$weight" } ,
-        totalDuration: { $sum: "$duration" }
-      }
-    },
-  ])
-  .then(function (res){
-    console.log(res); 
-  })  
-  .catch((err) => {
-    res.json(err);
+  app.get("/api/workouts/range", (req, res) => {
+    db.workout
+      .aggregate([
+        { $sort: { day: -1 } },
+        { $limit: 7 },
+        {
+          $addFields: {
+            totalWeight: { $sum: "$weight" },
+            totalDuration: { $sum: "$duration" },
+          },
+        },
+      ])
+      .then(function (workouts) {
+        res.json(workouts);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
   });
-  
-});
-
-    // Find the max balance of all accounts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* project('-id maxBalance'). */}
-  // [ { maxBalance: 98 } ]
+};

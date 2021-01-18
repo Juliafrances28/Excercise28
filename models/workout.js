@@ -4,10 +4,6 @@ let db = "../models/workout.js";
 
 const Schema = mongoose.Schema;
 
-// add the date. to schema
-// ({ test: Date });
-// schema.path('test') instanceof mongoose.Date
-
 const workoutSchema = new Schema({
     day: { type: Date, default: Date.now },
     excercise: [
