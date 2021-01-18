@@ -12,7 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutdb", {
+mongodb + srv; //dbworkout:<Peterrabbit2020!>@cluster0.ft9nt.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/workoutdb", {
   useNewUrlParser: true,
 });
 
