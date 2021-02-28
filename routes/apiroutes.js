@@ -1,13 +1,14 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const router = require("express").Router();
 
 const PORT = process.env.PORT || 3000;
-const db = require("../models");
+const workout = require("../models/workout");
 
 module.exports = function (app) {
-  app.get("/api/workouts", (req, res) => {
-    db.workout
+  router.get("/api/workouts", (req, res) => {
+    workout
       .find({})
       .then((dbWorkout) => {
         res.json(dbWorkout);
@@ -18,8 +19,8 @@ module.exports = function (app) {
   });
 
   // You need a post route for api/workouts
-  app.post("/api/workouts", ({ body }, res) => {
-    db.workout
+  router.post("/api/workouts", ({ body }, res) => {
+    workout
       .create(body)
       .then((dbworkout) => {
         res.json(dbworkout);
@@ -29,8 +30,25 @@ module.exports = function (app) {
       });
   });
 
-  app.get("/api/workouts/range", (req, res) => {
-    db.workout
+  router.put("/api/workouts", ({ body, params }, res) => {
+    workout
+      .findByIdAndUpdate(
+        params.id,
+        {
+          $push: { exercises: body },
+        },
+        { new: true, runValidators: true }
+      )
+      .then((dbworkout) => {
+        res.json(dbworkout);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  });
+
+  router.get("/api/workouts/range", (req, res) => {
+    workout
       .aggregate([
         { $sort: { day: -1 } },
         { $limit: 7 },
