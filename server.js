@@ -13,31 +13,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+MONGODB_URI =
+  "mongodb+srv://dbworkout:<Barley2020!>@cluster0.ft9nt.mongodb.net/workout?retryWrites=true&w=majority";
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutdb", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: false,
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
 app.use(require("./routes/htmlroutes.js"));
 
 app.use(require("./routes/apiroutes.js"));
-
-// app.put("api/workout/:id", ({ body }, res) => {
-//   db.workout
-//     .create(body)
-//     .then(({ _id }) =>
-//       db.workout.findOneAndUpdate(
-//         {},
-//         { $push: { workout: _id } },
-//         { new: true }
-//       )
-//     )
-//     .then((dbWorkout) => {
-//       res.json(dbWorkout);
-//     });
-// });
 
 app.listen(PORT, function () {
   console.log("Server listening on: http://localhost:" + PORT);
